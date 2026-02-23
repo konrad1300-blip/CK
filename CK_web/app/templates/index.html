@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Szacowanie czasu kroju</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Kalkulator czasu kroju v 0.15</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            <label for="file">Plik DXF:</label>
+            <input type="file" name="file" id="file" accept=".dxf" required>
+
+            <label for="sztuk">Liczba sztuk:</label>
+            <input type="number" name="sztuk" id="sztuk" value="1" min="1" required>
+
+            <button type="submit">Oblicz</button>
+        </form>
+
+        <!-- Komunikaty błędów -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Wyniki -->
+        {% if results %}
+        <div class="results">
+            <h3>Wyniki dla pliku: {{ filename }}</h3>
+            <div class="result-item">Długość ścieżki: {{ results.dlugosc }} mm</div>
+            <div class="result-item">ZUND – czas na 1 sztukę: {{ results.cz }} min</div>
+            <div class="result-item">LEKTRA – czas na 1 sztukę: {{ results.cl }} min</div>
+            <div class="result-item">JIGWEI – czas na 1 sztukę: {{ results.cw }} min</div>
+            <div class="result-item">ZUND – czysty krój: {{ results.ckz }} min</div>
+            <div class="result-item">LECTRA – czysty krój: {{ results.ckl }} min</div>
+            <div class="result-item">JIGWEI – czysty krój: {{ results.ckw }} min</div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
